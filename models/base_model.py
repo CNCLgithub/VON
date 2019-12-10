@@ -1,9 +1,9 @@
 import os
 import torch
-from . import networks, networks_3d
+from VON.models import networks, networks_3d
 from collections import OrderedDict
 from abc import ABC, abstractmethod
-from .basics import get_scheduler
+from VON.models.basics import get_scheduler
 import numpy as np
 
 
@@ -156,7 +156,7 @@ class BaseModel(ABC):
         return output
 
     def setup_DR(self, opt):
-        from render_module.render_sketch import VoxelRenderLayer, CroppingLayer, GetRotationMatrix, FineSizeCroppingLayer
+        from VON.render_module.render_sketch import VoxelRenderLayer, CroppingLayer, GetRotationMatrix, FineSizeCroppingLayer
         self.angles_2_rotmat = GetRotationMatrix()
         vsize = opt.load_size
         voxel_shape = torch.Size([opt.batch_size, 1, vsize, vsize, vsize])

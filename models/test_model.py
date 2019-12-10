@@ -1,4 +1,4 @@
-from .base_model import BaseModel
+from VON.models.base_model import BaseModel
 import numpy as np
 import torch
 
@@ -107,7 +107,7 @@ class TestModel(BaseModel):
             self.voxel = self.netG_3D(self.z_shape)
 
     def sample_2d(self, view_id, extra=False):
-        assert view_id >= 0 and view_id <= self.n_views
+        assert 0 <= view_id <= self.n_views
         view = self.views[view_id, :]
         with torch.no_grad():
             self.rot_mat = self.azele2matrix(az=view[1], ele=view[0]).unsqueeze(0).repeat(self.bs, 1, 1)

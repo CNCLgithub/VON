@@ -86,7 +86,7 @@ def render(model_path, render_prefix, az, ele, view_id, res=512):
     z = 2.0 * math.sin(up_angle)
     camera.location = (x, y, z)
 
-    scn.render.filepath = os.path.join(render_prefix + 'view%03d.jpg' % view_id)
+    scn.render.filepath = os.path.join(render_prefix + '_blender%03d.jpg' % view_id)
     bpy.ops.render.render(write_still=True)
     print('Image saved: ' + scn.render.filepath)
 
@@ -94,7 +94,7 @@ def render(model_path, render_prefix, az, ele, view_id, res=512):
 if __name__ == '__main__':
     import sys
     obj_name = sys.argv[4]
-    prefix = (sys.argv[5])
+    prefix = sys.argv[5]
     ele = float(sys.argv[6])
     az = float(sys.argv[7])
     view_id = int(sys.argv[8])

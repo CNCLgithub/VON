@@ -7,7 +7,7 @@ from os.path import dirname, join
 import cv2
 
 try:
-    from .util_print import str_warning
+    from VON.util.util_print import str_warning
 except ImportError:
     str_warning = '[Warning]'
 from glob import glob
@@ -17,9 +17,11 @@ def render(obj_name, views, render_prefix, res):
     render_script = join(dirname(__file__), 'util_render.py')
     cmd = 'blender --background --python %s %s %s' % (render_script, obj_name, render_prefix)
     for view_id in range(views.shape[0]):
-        cmd_view = cmd + ' %f %f %d >/dev/null' % (views[view_id, 0], views[view_id, 1], view_id)
+        cmd_view = cmd + ' %f %f %d > /dev/null' % (views[view_id, 0], views[view_id, 1], view_id+1)
         call(cmd_view, shell=True)
     imgs = glob(render_prefix + '*.png')
+    imgs = [img for img in imgs if "blender" in img]
+    print("imgs:", imgs)
     crop_and_pad(imgs)
 
 
@@ -81,25 +83,25 @@ def __pad_real_im(img, padding_pix_pct=0.03, img_size=256, padding_value=255):
     return crop
 
 
-@numba.jit(nopython=True, cache=True)
-def downsample(vox_in, times, use_max=True):
-    if vox_in.shape[0] % times != 0:
-        print('WARNING: not dividing the space evenly.')
-    dim = vox_in.shape[0] // times
-    vox_out = np.zeros((dim, dim, dim))
-    for x in range(dim):
-        for y in range(dim):
-            for z in range(dim):
-                subx = x * times
-                suby = y * times
-                subz = z * times
-                subvox = vox_in[subx:subx + times - 1,
-                                suby:suby + times - 1, subz:subz + times - 1]
-                if use_max:
-                    vox_out[x, y, z] = np.max(subvox)
-                else:
-                    vox_out[x, y, z] = np.mean(subvox)
-    return vox_out
+# @numba.jit(nopython=True, cache=True)
+# def downsample(vox_in, times, use_max=True):
+#     if vox_in.shape[0] % times != 0:
+#         print('WARNING: not dividing the space evenly.')
+#     dim = vox_in.shape[0] // times
+#     vox_out = np.zeros((dim, dim, dim))
+#     for x in range(dim):
+#         for y in range(dim):
+#             for z in range(dim):
+#                 subx = x * times
+#                 suby = y * times
+#                 subz = z * times
+#                 subvox = vox_in[subx:subx + times - 1,
+#                                 suby:suby + times - 1, subz:subz + times - 1]
+#                 if use_max:
+#                     vox_out[x, y, z] = np.max(subvox)
+#                 else:
+#                     vox_out[x, y, z] = np.mean(subvox)
+#     return vox_out
 
 
 def find_bound(voxel, *, threshold=0.5):
@@ -131,8 +133,7 @@ def save_obj(vertices, faces, path):
         for v in vertices:
             f.write('v {} {} {}\n'.format(v[0], v[1], v[2]))
         for face in faces:
-            f.write('f {} {} {}\n'.format(
-                face[0] + 1, face[1] + 1, face[2] + 1))
+            f.write('f {} {} {}\n'.format(face[0] + 1, face[1] + 1, face[2] + 1))
 
 
 def save_vox_to_obj(voxel, th, save_path):

@@ -1,15 +1,14 @@
 import argparse
 import os
-from util import util
+from VON.util import util
 import pickle
-import models
-import data
+from VON import models
+from VON import data
 import torch
 
 
 class BaseOptions():
     """This class defines options used during both training and test time.
-
     It also implements several helper functions such as parsing, printing, and saving the options.
     It also gathers additional options defined in <modify_commandline_options> functions in both dataset class and model class.
     """
@@ -18,6 +17,7 @@ class BaseOptions():
         self.initialized = False
 
     def initialize(self, parser):
+        parser.add_argument('--root', type=str, default=None, help='path to the entire VON project')
         parser.add_argument('--dataroot', type=str, default=None, help='path to images (should have subfolders trainA, trainB, valA, valB, etc)')
         parser.add_argument('--batch_size', type=int, default=12, help='batch size')
         parser.add_argument('--load_size', type=int, default=128, help='scale images to this size')
@@ -109,7 +109,6 @@ class BaseOptions():
 
     def print_options(self, opt):
         """Print and save options
-
         It will print both current options and default values(if different).
         It will save options into a text file / [checkpoints_dir] / opt.txt
         """

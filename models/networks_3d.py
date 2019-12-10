@@ -1,7 +1,7 @@
 import math
 from torch import nn
 import torch
-from .basics import get_norm_layer, init_net
+from VON.models.basics import get_norm_layer, init_net
 
 
 def define_G_3D(nz=200, res=128, model='G0', ngf=64, norm='batch3d',
@@ -49,14 +49,16 @@ class _netG0(nn.Module):
         super(_netG0, self).__init__()
         norm_layer = get_norm_layer(layer_type=norm)
         self.res = res
-        self.block_0 = nn.Sequential(*[nn.ConvTranspose3d(nz, ngf * max_nf, 4, 1, 0, bias=bias), norm_layer(ngf * 8), nn.ReLU(True)])
+        self.block_0 = nn.Sequential(*[nn.ConvTranspose3d(nz, ngf * max_nf, 4, 1, 0, bias=bias),
+                                       norm_layer(ngf * 8), nn.ReLU(True)])
         self.n_blocks = 1
         input_dim = ngf * max_nf
         n_layers = int(math.log(res, 2)) - 3
         for n in range(n_layers):
             input_nc = int(max(ngf, input_dim))
             output_nc = int(max(ngf, input_dim // 2))
-            setattr(self, 'block_{:d}'.format(self.n_blocks), deconvBlock(input_nc, output_nc, bias, norm_layer=norm_layer, nl='relu'))
+            setattr(self, 'block_{:d}'.format(self.n_blocks), deconvBlock(input_nc, output_nc, bias,
+                                                                          norm_layer=norm_layer, nl='relu'))
             input_dim /= 2
             self.n_blocks += 1
 

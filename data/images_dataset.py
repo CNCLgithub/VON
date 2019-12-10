@@ -1,5 +1,5 @@
 import os.path
-from data.base_dataset import BaseDataset, get_transform, get_normaliztion
+from VON.data.base_dataset import BaseDataset, get_transform, get_normaliztion
 import numpy as np
 import random
 from PIL import Image

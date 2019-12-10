@@ -1,8 +1,8 @@
 import numpy as np
 import os
 import ntpath
-from . import util
-from . import html
+from VON.util import util
+from VON.util import html
 from scipy.misc import imresize
 import math
 import torch
@@ -60,6 +60,22 @@ def save_images(webpage, images, names, image_path, title=None, width=256, aspec
         ims.append(image_name)
         txts.append(label)
         links.append(image_name)
+    webpage.add_images(ims, txts, links, width=width)
+
+def save_images_simple(webpage, image_path, width=256, aspect_ratio=1.0):
+    image_dir = webpage.get_image_dir()
+    title = image_path
+    webpage.add_header(title)
+
+    ims = os.listdir(image_dir)
+    ims = sorted([k for k in ims if image_path == str.split(k, "_")[0] and ".png" in k])
+    if any("observable" in string for string in ims):
+        ims.append(ims.pop(ims.index(image_path+"_observable.png")))
+    names = [str.split(str.split(name, "_")[1], ".")[0] for name in ims]
+    txts = names
+
+    links = ims
+
     webpage.add_images(ims, txts, links, width=width)
 
 

@@ -1,8 +1,7 @@
 import torch
 import torch.nn as nn
 import math
-from .basics import get_norm_layer, get_non_linearity, init_net
-
+from VON.models.basics import get_norm_layer, get_non_linearity, init_net
 
 ###############################################################################
 # Functions
