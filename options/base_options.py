@@ -64,7 +64,7 @@ class BaseOptions():
         parser.add_argument('--init_param', type=float, default=0.02, help='scaling factor for normal, xavier and orthogonal.')
         # 3D paramters:
         parser.add_argument('--voxel_res', type=int, default=128, help='the resolution of voxelized data')
-        parser.add_argument('--class_3d', type=str, default='car', choices=['car', 'chair'], help='3d model class')
+        parser.add_argument('--class_3d', type=str, default='car', choices=['car', 'chair', 'airplane'], help='3d model class')
         parser.add_argument('--model3D_dir', type=str, default=None, help='directory to store pretrained 3D model')
         parser.add_argument('--model2D_dir', type=str, default=None, help='directory to store pretrained 2D model')
         parser.add_argument('--use_df', action='store_true', help='use distance function (DF) representation')

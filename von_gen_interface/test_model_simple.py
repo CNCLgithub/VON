@@ -24,8 +24,8 @@ class TestModelSimple(BaseModel):
         self.use_df = opt.use_df or opt.dataset_mode.find('df') >= 0
 
         self.netG_3D = self.define_G_3D()
-        self.netG_AB = self.define_G(opt.input_nc, opt.output_nc, opt.nz_texture, ext='AB')
-        self.netE = self.define_E(opt.output_nc, self.vae)
+        #self.netG_AB = self.define_G(opt.input_nc, opt.output_nc, opt.nz_texture, ext='AB')
+        #self.netE = self.define_E(opt.output_nc, self.vae)
         self.is_loaded = True
         self.nz_shape = opt.nz_shape
         self.nz_texture = opt.nz_texture

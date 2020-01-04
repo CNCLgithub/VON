@@ -16,26 +16,33 @@ def preprocess(opt, gpu_ids):
         torch.cuda.set_device(opt.gpu_ids[0])
 
 
-def load_models(gpu_ids, car=True, chair=True):
+def load_models(gpu_ids, car=True, chair=True, airplane=True):
     # preprocess opt
     preprocess(opt, gpu_ids)
 
     car_model = None
     chair_model = None
+    airplane_model = None
 
     model3D_dir = opt.model3D_dir
-    model2D_dir = opt.model2D_dir
+    #model2D_dir = opt.model2D_dir
 
     # load car_model
     if car:
         opt.model3D_dir = join(model3D_dir, "car_df")
-        opt.model2D_dir = join(model2D_dir, "car_df/latest")
+        #opt.model2D_dir = join(model2D_dir, "car_df/latest")
         car_model = TestModelSimple(opt)
 
     # load chair model
     if chair:
         opt.model3D_dir = join(model3D_dir, "chair_df")
-        opt.model2D_dir = join(model2D_dir, "chair_df/latest")
+        #opt.model2D_dir = join(model2D_dir, "chair_df/latest")
+        chair_model = TestModelSimple(opt)
+
+    # load chair model
+    if airplane:
+        opt.model3D_dir = join(model3D_dir, "airplane_df")
+        #opt.model2D_dir = join(model2D_dir, "airplane_df/latest")
         chair_model = TestModelSimple(opt)
 
     return car_model, chair_model
