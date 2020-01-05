@@ -34,7 +34,8 @@ if [ "$HAS_CUDA" == "True" ]; then
         -gencode arch=compute_30,code=sm_30 \
         -gencode arch=compute_35,code=sm_35 \
         -gencode arch=compute_52,code=sm_52 \
-        -gencode arch=compute_61,code=sm_61 "
+        -gencode arch=compute_61,code=sm_61 \
+        -gencode arch=compute_70,code=sm_70"
     echo "$cmd"
     eval "$cmd"
     cd ../..
