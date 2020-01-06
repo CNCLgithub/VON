@@ -45,4 +45,4 @@ def load_models(gpu_ids, car=True, chair=True, airplane=True):
         #opt.model2D_dir = join(model2D_dir, "airplane_df/latest")
         chair_model = TestModelSimple(opt)
 
-    return car_model, chair_model
+    return car_model, chair_model, airplane_model
