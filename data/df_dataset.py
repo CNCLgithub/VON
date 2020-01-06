@@ -13,6 +13,8 @@ class DFDataset(BaseDataset):
             filelist = join(dataroot, 'df_chair.txt')
         elif opt.class_3d == 'car':
             filelist = join(dataroot, 'df_car.txt')
+        elif opt.class_3d == 'airplane':
+            filelist = join(dataroot, 'df_airplane.txt')
         else:
             raise NotImplementedError('%s not supported' % opt.class_3d)
         items = open(filelist).readlines()
