@@ -93,9 +93,10 @@ def render(model_path, render_prefix, az, ele, view_id, res=512):
 
 if __name__ == '__main__':
     import sys
-    obj_name = sys.argv[4]
-    prefix = sys.argv[5]
-    ele = float(sys.argv[6])
-    az = float(sys.argv[7])
-    view_id = int(sys.argv[8])
+    argstart = 5
+    obj_name = sys.argv[argstart]
+    prefix = sys.argv[argstart+1]
+    ele = float(sys.argv[argstart+2])
+    az = float(sys.argv[argstart+3])
+    view_id = int(sys.argv[argstart+4])
     render(obj_name, prefix, az, ele, view_id)

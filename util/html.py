@@ -22,8 +22,8 @@ class HTML:
         self.img_dir = os.path.join(self.web_dir, 'images')
         if not os.path.exists(self.web_dir):
             os.makedirs(self.web_dir)
-        if not os.path.exists(self.img_dir):
-            os.makedirs(self.img_dir)
+        # if not os.path.exists(self.img_dir):
+            # os.makedirs(self.img_dir)
 
         self.doc = dominate.document(title=title)
         if refresh > 0:
@@ -56,8 +56,10 @@ class HTML:
                 for im, txt, link in zip(ims, txts, links):
                     with td(style="word-wrap: break-word;", halign="center", valign="top"):
                         with p():
-                            with a(href=os.path.join('images', link)):
-                                img(style="width:%dpx" % width, src=os.path.join('images', im))
+                            # with a(href=os.path.join('images', link)):
+                                # img(style="width:%dpx" % width, src=os.path.join('images', im))
+                            with a(href=link):
+                                img(style="width:%dpx" % width, src=im)
                             br()
                             p(txt)
 

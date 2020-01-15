@@ -15,14 +15,14 @@ from glob import glob
 
 def render(obj_name, views, render_prefix, res):
     render_script = join(dirname(__file__), 'util_render.py')
-    cmd = 'blender --background --python %s %s %s' % (render_script, obj_name, render_prefix)
+    cmd = 'blender --background -noaudio --python %s %s %s' % (render_script, obj_name, render_prefix)
     for view_id in range(views.shape[0]):
         cmd_view = cmd + ' %f %f %d > /dev/null' % (views[view_id, 0], views[view_id, 1], view_id+1)
         call(cmd_view, shell=True)
     imgs = glob(render_prefix + '*.png')
     imgs = [img for img in imgs if "blender" in img]
-    print("imgs:", imgs)
     crop_and_pad(imgs)
+    return imgs
 
 
 def crop_and_pad(img_paths):

@@ -1,7 +1,9 @@
 from VON.models.base_model import BaseModel
 import numpy as np
 import torch
-
+import trimesh
+import scipy
+import pdb
 
 class TestModelSimple(BaseModel):
     @staticmethod
@@ -44,24 +46,59 @@ class TestModelSimple(BaseModel):
                 self.z_texture, mu, var = self.encode(self.input_B, vae=self.vae)
                 self.z_texture = mu
 
-    def sample_3d(self, shape_code):
-        with torch.no_grad():
-            shape_code = torch.Tensor(shape_code).float().to(self.device)
-            voxel = self.netG_3D(shape_code.view(1, self.nz_shape, 1, 1, 1))
-        return voxel
+    def load_obj(self, obj_path):
+        # this follows the learning target creation used to train the 3D networks
+        print("loading .obj file from {} ...".format(obj_path))
+        res = 128
+        density = 80000
+        mesh = trimesh.load_mesh(obj_path)
+        try:
+            dump = mesh.dump()
+            mesh = dump.sum()
+        except:
+            pass
+        mesh.vertices -= mesh.centroid
+        x = np.linspace(-0.5, 0.5, res)
+        xv, yv, zv = np.meshgrid(x, x, x)
+        points = np.zeros([res, res, res, 3])
+        points[:, :, :, 0] = xv
+        points[:, :, :, 1] = yv
+        points[:, :, :, 2] = zv
+        points = points.reshape(res**3, 3)
+        mesh_points = mesh.sample(int(mesh.area * density))
+        tree = scipy.spatial.cKDTree(mesh_points, leafsize=30)
+        d, _ = tree.query(points, k=5)
+        d = np.mean(d, 1)
+        # distance function representation
+        d_s = d.reshape(res, res, res)
+        data_3d = torch.from_numpy(d_s).float().unsqueeze(0)
+        data_3d = np.exp(-8.0 * data_3d)
+        data_3d = data_3d.transpose(1, 2)
+        data_3d = torch.flip(data_3d, [1])
+        data_3d = data_3d.transpose(2, 3)
+        data_3d = torch.flip(data_3d, [2])
+        data_3d = data_3d.contiguous()
+        data_3d = data_3d.unsqueeze(0).to(self.device)
+        return data_3d
 
-    def sample_2d(self, shape_code, view_code):
-        assert view_code.ndim == 1
-        assert len(view_code) == 2
+    def sample_3d(self, shape_code):
         assert shape_code.ndim == 1
         assert len(shape_code) == self.nz_shape
+        with torch.no_grad():
+            shape_code = torch.Tensor(shape_code).float().to(self.device)
+            data_3d = self.netG_3D(shape_code.view(1, self.nz_shape, 1, 1, 1))
+        return data_3d
 
-        voxel = self.sample_3d(shape_code.reshape((1, self.nz_shape, 1, 1, 1)))
+    def render_3d(self, data_3d, view_code):
+        assert view_code.ndim == 1
+        assert len(view_code) == 2
+
+        # voxel = self.sample_3d(shape_code.reshape((1, self.nz_shape, 1, 1, 1)))
 
         with torch.no_grad():
             rot_mat = self.azele2matrix(az=view_code[1], ele=view_code[0]).unsqueeze(0).repeat(1, 1, 1)
             rot_mat = rot_mat.to(self.device)
-            mask, depth = self.get_depth(voxel, rot_mat, use_df=self.use_df)
+            mask, depth = self.get_depth(data_3d, rot_mat, use_df=self.use_df)
 
         return mask[0].cpu().numpy(), depth[0].cpu().numpy()
 
