@@ -62,6 +62,7 @@ opt.model3D_dir = join(opt.root, "final_models/models_3D")
 opt.model2D_dir = join(opt.root, "final_models/models_2D")
 opt.use_df = False
 opt.df_th = 0.9
+opt.iso_th = 0.01
 
 # misc
 opt.no_largest = False
