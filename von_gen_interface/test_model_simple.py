@@ -3,13 +3,15 @@ import numpy as np
 import torch
 from skimage import measure
 
+import pdb
+
 
 class TestModelSimple(BaseModel):
     @staticmethod
     def modify_commandline_options(parser, is_train=True):
         return parser
 
-    def __init__(self, opt, use_kaolin=True):
+    def __init__(self, opt, flip=False):
         assert (not opt.isTrain)
         BaseModel.__init__(self, opt)
         self.vae = True
@@ -19,6 +21,8 @@ class TestModelSimple(BaseModel):
 
         self.netG_3D = self.define_G_3D()
         self.nz_shape = opt.nz_shape
+
+        self.flip = flip
 
     def set_input(self, input, reset_shape=False, reset_texture=False):
         self.input_B = input[0]['image'].to(self.device)
@@ -42,6 +46,14 @@ class TestModelSimple(BaseModel):
         else:
             # we want to have triangular meshes now instead of df representation
             data_3d = data_3d[0, 0, :, :, :]
+            if self.flip:
+                pass
+                # data_3d = torch.flip(data_3d, [0])
+                # data_3d = torch.flip(data_3d, [1])
+                # data_3d = data_3d.transpose(1, 2)
+                # data_3d = torch.flip(data_3d, [0])
+                # data_3d = data_3d.transpose(0, 1)
+
             data_3d = data_3d.permute(1,2,0)
 
             space = 1.0 / float(self.voxel_res)

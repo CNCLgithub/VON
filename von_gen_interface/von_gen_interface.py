@@ -44,12 +44,12 @@ def load_models(gpu_ids, objects_to_load):
     if "airplane" in objects_to_load:
         opt.model3D_dir = join(model3D_dir, "airplane_df")
         #opt.model2D_dir = join(model2D_dir, "airplane_df/latest")
-        airplane_model = TestModelSimple(opt)
+        airplane_model = TestModelSimple(opt, flip=True)
 
     # load airplane model
     if "table" in objects_to_load:
         opt.model3D_dir = join(model3D_dir, "table_df")
         #opt.model2D_dir = join(model2D_dir, "table_df/latest")
-        table_model = TestModelSimple(opt)
+        table_model = TestModelSimple(opt, flip=True)
 
     return car_model, chair_model, airplane_model, table_model
