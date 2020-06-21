@@ -1,4 +1,4 @@
-from VON.models.base_model import BaseModel
+from .base_model import BaseModel
 import numpy as np
 import torch
 

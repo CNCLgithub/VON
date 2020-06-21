@@ -1,7 +1,7 @@
 import math
 from torch import nn
 import torch
-from VON.models.basics import get_norm_layer, init_net
+from .basics import get_norm_layer, init_net
 
 
 def define_G_3D(nz=200, res=128, model='G0', ngf=64, norm='batch3d',

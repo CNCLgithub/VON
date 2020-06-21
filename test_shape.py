@@ -1,12 +1,12 @@
-from .options.test_options import TestOptions
-from .models import create_model
+from options.test_options import TestOptions
+from models import create_model
 from os.path import join
 from skimage import measure
 import numpy as np
 import os
 from tqdm import tqdm
 import torch
-from .util.util_voxel import render
+from util.util_voxel import render
 
 
 def save_obj(vertices, faces, name='model'):

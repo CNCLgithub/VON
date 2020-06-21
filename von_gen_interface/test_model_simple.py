@@ -1,9 +1,8 @@
-from VON.models.base_model import BaseModel
 import numpy as np
 import torch
 from skimage import measure
 
-import pdb
+from ..models.base_model import BaseModel
 
 
 class TestModelSimple(BaseModel):

@@ -1,7 +1,7 @@
 import torch
-from VON.models.base_model import BaseModel
-from VON.models.networks_3d import _calc_grad_penalty
-from VON.models.networks import GANLoss
+from .base_model import BaseModel
+from .networks_3d import _calc_grad_penalty
+from .networks import GANLoss
 import numpy as np
 import os
 

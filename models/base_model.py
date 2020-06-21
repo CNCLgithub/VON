@@ -1,9 +1,9 @@
 import os
 import torch
-from VON.models import networks, networks_3d
+from . import networks, networks_3d
 from collections import OrderedDict
 from abc import ABC, abstractmethod
-from VON.models.basics import get_scheduler
+from .basics import get_scheduler
 import numpy as np
 
 

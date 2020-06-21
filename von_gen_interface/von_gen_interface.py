@@ -1,6 +1,8 @@
+import sys
 from os.path import join
-from VON.von_gen_interface.test_model_simple import TestModelSimple
-from VON.von_gen_interface.options import opt
+
+from .test_model_simple import TestModelSimple
+from .options import opt
 import torch
 
 
@@ -26,30 +28,25 @@ def load_models(gpu_ids, objects_to_load):
     table_model = None
 
     model3D_dir = opt.model3D_dir
-    #model2D_dir = opt.model2D_dir
 
     # load car_model
     if "car" in objects_to_load:
         opt.model3D_dir = join(model3D_dir, "car_df")
-        #opt.model2D_dir = join(model2D_dir, "car_df/latest")
         car_model = TestModelSimple(opt)
 
     # load chair model
     if "chair" in objects_to_load:
         opt.model3D_dir = join(model3D_dir, "chair_df")
-        #opt.model2D_dir = join(model2D_dir, "chair_df/latest")
         chair_model = TestModelSimple(opt)
 
     # load airplane model
     if "airplane" in objects_to_load:
         opt.model3D_dir = join(model3D_dir, "airplane_df")
-        #opt.model2D_dir = join(model2D_dir, "airplane_df/latest")
         airplane_model = TestModelSimple(opt, flip=True)
 
     # load airplane model
     if "table" in objects_to_load:
         opt.model3D_dir = join(model3D_dir, "table_df")
-        #opt.model2D_dir = join(model2D_dir, "table_df/latest")
         table_model = TestModelSimple(opt, flip=True)
 
     return car_model, chair_model, airplane_model, table_model

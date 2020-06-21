@@ -1,4 +1,4 @@
-from VON.options.base_options import BaseOptions
+from .base_options import BaseOptions
 
 
 class TestOptions(BaseOptions):

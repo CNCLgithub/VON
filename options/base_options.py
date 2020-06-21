@@ -1,10 +1,13 @@
 import argparse
 import os
-from VON.util import util
+import sys
 import pickle
-from VON import models
-from VON import data
 import torch
+
+sys.path.append("..")
+from util import util
+import models
+import data
 
 
 class BaseOptions():

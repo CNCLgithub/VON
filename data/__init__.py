@@ -10,7 +10,7 @@ See our template dataset class 'template_dataset.py' for more details.
 """
 import importlib
 import torch.utils.data
-from VON.data.base_dataset import BaseDataset
+from .base_dataset import BaseDataset
 
 
 def find_dataset_using_name(dataset_name):
@@ -19,8 +19,8 @@ def find_dataset_using_name(dataset_name):
     be instantiated. It has to be a subclass of BaseDataset,
     and it is case-insensitive.
     """
-    dataset_filename = "VON.data." + dataset_name + "_dataset"
-    datasetlib = importlib.import_module(dataset_filename)
+    dataset_filename = "." + dataset_name + "_dataset"
+    datasetlib = importlib.import_module(dataset_filename, "data")
 
     dataset = None
     target_dataset_name = dataset_name.replace('_', '') + 'dataset'
@@ -46,7 +46,7 @@ def create_dataset(opt):
     This function wraps the class CustomDatasetDataLoader.
         This is the main interface between this package and 'train.py'/'test.py'
     Example:
-        >>> from VON.data import create_dataset
+        >>> from . import create_dataset
         >>> dataset = create_dataset(opt)
     """
     data_loader = CustomDatasetDataLoader(opt)

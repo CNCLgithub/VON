@@ -1,11 +1,11 @@
 import os
 from os.path import join
-from VON.options.test_options import TestOptions
-from VON.data import create_dataset
-from VON.models import create_model
-from VON.util.visualizer import save_images, convert_image
-from VON.util.util_voxel import save_vox_to_obj, render
-from VON.util import html
+from options.test_options import TestOptions
+from data import create_dataset
+from models import create_model
+from util.visualizer import save_images, convert_image
+from util.util_voxel import save_vox_to_obj, render
+from util import html
 from tqdm import tqdm
 
 # options
